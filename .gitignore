@@ -8,7 +8,6 @@ test.py
 scripts/
 notes/
 sample_data/
-notebooks/
 .vscode
 
 # Byte-compiled / optimized / DLL files
