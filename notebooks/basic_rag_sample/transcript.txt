@@ -1,0 +1,115 @@
+In this video, I am going to give a general overview of RAG, that's Retrieval Augmented Generation.
+It's a technique that was created to solve some of the limitations of large language models like GPT.
+I will also go over some of the use cases for implementing a RAG pipeline into chatting with your documents.
+So you can think of RAG as an advanced search engine for searching through your documents.
+Instead of searching through your documents through keywords, you can chat with them.
+So just like how you would with something like ChatGPT, say you want to ask a question on a document,
+you could just take those documents and this is you, the user.
+You submit your question along with the documents that you want to ask about, submit it into an LLM like ChatGPT, and then you get your answer.
+And that's what you can do with RAG model at scale.
+So if you were to do this at scale with lots of documents, you would quickly exceed the token limit of most large language models.
+They all have a limit to how many tokens you can submit.
+And so the RAG pipeline helps us solve this problem.
+And you can basically chat with an unlimited amount of documents that you have.
+So if you have a huge database of data or documents that you want to chat with or ask questions on,
+then if you were to implement a RAG pipeline, then you could easily do this.
+So another problem that the RAG pipeline solves is that if you were to ask ChatGPT or any LLM a question,
+that the answer that you get is limited to the information that the LLM was trained on up to that point.
+Training an LLM is expensive, so you would only train it for up to a certain time.
+And then at some point in the future, you train it again on more information.
+So that means that any information that came after that training point, the LLM is unaware of.
+So current data, current information, current news, the LLM is not going to know about it.
+And because it's trained on open data, it's also not going to be able to distinguish the sources of that data.
+So sometimes it can be wrong because it just has tons of data that it's being fed,
+and it doesn't know how to distinguish factual information from incorrect information.
+So by adding your own documents into the model and feeding it,
+then you can provide it with current information or reliable sources that you can trust.
+And so you know that your answer is going to be one that you can trust.
+So why would we implement a RAG pipeline into our app or when we want to chat with our documents?
+Well, this allows you to customize the LLM.
+Basically, you can have the LLM answer questions that's only based on the information that you provided.
+And like I said before, if you have lots of information, you can't provide that every time you ask a question.
+You want to be able to just ask a question and then have the LLM only source the information that you have provided it with.
+And you want to be able to do that without having to provide all of the documents.
+So you can imagine like if you want to ask a question on a textbook, for example,
+then you wouldn't want to provide the whole textbook to the LLM because there's only going to be certain sections of that textbook that are going to be relevant to the question that you're asking.
+And a RAG pipeline allows you to customize what pieces of those documents are provided into the LLM so that you can reduce your your token count that you're providing and reduce your cost.
+Because when you provide your LLM with lots of tokens, you are paying for the cost of those tokens for how long those documents are.
+And this is useful for many fields that I'll talk about in a minute, but you can see how providing it with current information, you can get the most up to date responses on what you're asking.
+And so a RAG pipeline allows you to scale this process here where you're asking the LLM a question based on some documents while limiting the documents,
+the snippets of text that it's using so that you can scale your application if it relies on lots of information from different sources like product catalogs,
+journals or blog posts or lots of different sources that you can provide with API endpoints, data that you collect from really any source.
+You can scale this process right here and get an answer with limited token consumption.
+So RAG pipeline has many use cases. One could be replacing your product guides.
+So if you want your customers to be able to ask questions on your products, instead of having them message your customer support team, they could just ask a chat bot that is based on your product guides and brochures.
+Or if your customers have questions that can be addressed with an FAQ, but maybe you have lots of those types of questions rather than having them search through your FAQ page, you could just have that chat bot be able to answer any type of customer support questions.
+And because the knowledge base that the LLM uses can be really anything, you can even use it in your internal teams.
+You can create a knowledge base of information that you want to keep within the company like training material so that your employees can perform their jobs more quickly by simply having a chat bot that they can ask questions on rather than having to refer to training or ask a colleague for how to do a certain task.
+It's very useful in doing legal research. So as we saw in the early days of GPT-3, there were cases where the LLM hallucinated on some of the information that it provided to lawyers and law offices.
+And there were cases where some of the arguments that were made were based on false information. So by limiting the LLM to only using the sources that you provide, then it can help you do legal research that you know is factual and can help you research statutes, past cases, precedents that were set in those cases, and things like that.
+It's very helpful in the healthcare and medical communities. The medical field is one that is quickly changing, always changing, and there's always journals that are published with the latest treatment options.
+And that can be very helpful for a healthcare professional who wants to help treat a patient and is looking for the latest options for their patients.
+So a database that has all of that information can be very beneficial to healthcare professionals. It can be very helpful for product recommendations.
+If you have an e-commerce platform, for example, if the LLM is trained or rather it's provided with user reviews, user stories of products that have been used, then if someone were to ask a question like, what's a camera that's under $500 and is good for outdoor portraits and outdoor lighting, then there might be a review that has that information.
+So the LLM would be able to answer with a product recommendation that fits the specific user's needs. It would be helpful in financial services.
+So you can't ask a LLM, like I said before, information on current data, so I wouldn't know what happened in the news today.
+But if you were to provide it with daily news articles or the latest articles, then you would be able to create reports, financial reports, assess the market, be able to make financial decisions based on the latest information because that's what you're providing to the LLM.
+So those are just some of the use cases for implementing a reg pipeline. As you can see that there's really limitless applications for this, and that's why it's a very popular technique architecture for creating chat bots and working with LLMs using your own data.
+So there's a few components to a reg pipeline. So you wouldn't just provide these documents like this. You would have in your reg pipeline, you would have in the first step would be your index.
+The index is your knowledge store, and that's the, that has whatever information you provided to your data store. So it could be data that you collected through APIs, through crawling the web, PDF documents that you've uploaded, data from tables, SQL databases, really anything.
+This is your knowledge base, and that's the vector store. So this would be your vector store.
+And when you submit your query, what you're doing is you're taking that query and it's getting embedded. So it's getting embedded into a vector.
+And that vector is being compared to the vectors that are already present in your vector store. So the way these vector stores work is when you have your documents and you're going to store them in this vector store, they get embedded.
+And what that means is that the text gets converted into a vector. A vector is just a numerical representation of the document that's based on its semantic meaning. So documents would get mapped into this multidimensional space that is based on the semantic meaning.
+If they're similar in semantic meaning, they would be close to each other in that space. So here's a three dimensional space. You can see you have the vertical and the horizontal axis and words that have similar meaning will be close to each other.
+Like here you have red and ruby, whereas car and auto and aircraft will have vectors that map to a different part of the space that are far from words that don't, that aren't similar.
+And these vectors are sometimes in the hundreds or thousands of in the dimension. This is only three dimensions, but you get the idea with this three dimensional space. So once those documents are embedded, they get stored in this vector store.
+They get indexed and the same thing happens to your question. You're the query that you submit to the rag pipeline. You get it gets embedded and then similarity search is done in order to find what documents or what snippets of those documents are in the same space as this query.
+There's multiple techniques for finding the most relevant documents based on your input query. But once you once you have those two embeddings in a similarity search is done, then you get your final you get your produced documents.
+And these are the documents that are going to be similar to your input query. I just colored them in green there so we know that these are the documents that are relevant to our input query.
+And these are the original documents that you indexed into your vector store. So this is your vector store that you're.
+Query and then from that vector so you get your the documents and the part that does the searching in your vector store is actually called a retriever.
+So you'll have a retriever.
+And the retriever is what performs the action of.
+Taking that input query.
+And retrieving the most relevant documents from the vector store that are closest to your input query. And there's multiple providers for embedding models.
+So depending on what embedding model you use, you know, you get better representations of those texts mapped into that vector space.
+Cohere is a really popular one for to use as an embedding model. Open AI has their own. That's also really good. And the last component of the right pipeline is the generator, which is really just the.
+The LLM. So we'll just call this generator because it's the brain. It's the basically the LLM that you're using.
+And this is what does the generation. So we'll just replace this LLM with that generator.
+And you provide.
+It receives.
+The initial query because really ultimately you want to ask an LLM for an answer to whatever question you have. And then it also receives these documents as an input.
+So instead of providing a whole textbook to your LLM and asking one question.
+On about the textbook, you would provide only a few sections, and that's what the retriever achieves. It gets you just the most relevant snippets.
+So you provide those snippets and as you can see, it would be a much reduced amount of text that you would provide to the LLM.
+And then with your original query, now you can answer your question because it only has the relevant pieces of text and then the generator produces the response.
+And then because it only used the information that you provided it with, as long as you prompt it correctly and I'll go over how to prompt a rag pipeline when you're when you're building it later on.
+But. It will only use the documents that you provided with rather than.
+All of the information that it was pre trained on, and it is important that you do specify when you're building out your right pipeline, you're specifying to only rely on the document that you're providing it with, because.
+It will still try to answer your question based on information that was trained on, and it doesn't know what is true or not.
+And so if your rag pipeline was designed in such a way that you're not retrieving relevant context or for whatever reason, the question you're asking is not in your vector store.
+Maybe you're asking a question that has nothing to do with the information you have in your vector store.
+And these snippets, these documents, the context won't be won't have the information you need to answer the question.
+And so that's when the generator, the LLM will try to answer the question using information that it was trained on.
+And they won't tell you that it did that or that the information is not correct.
+So it's very important that you are careful with how you design this entire process.
+You have to be selective with whatever embedding model you use for your specific use case.
+Try different ones, because some of them are better for different use cases.
+And then the retriever, you want to make sure that you've designed it in a way that it's retrieving all of the context, because there's limitations in here that I'll go over later where it won't retrieve.
+Even if you have that information in your vector store, if you don't design it correctly, it might still not retrieve the information.
+And so these could still be irrelevant context where your information is there, but you just didn't retrieve it.
+And then the generator, every vendor has their own.
+Facebook has LLM, OpenAI has GPT, Google has Gemini.
+And you can take these models pre-trained or you can also find them, pre-train them so that they work better for your specific use case.
+Or you can also take a pre-trained model from one that you find on Huggy Face.
+I'm just going to give it some labels here so that it makes sense.
+This is your indexing step.
+This is your indexing component of your rag pipeline.
+This is your retriever component of your rag pipeline.
+And then you have your generator.
+These are the three components to your rag pipeline.
+And there are more advanced components that you can implement into your rag pipeline to make your retrieval process and eventually your answer more factual.
+So that's a general overview of the rag pipeline and how it can be useful for multiple use cases and how you would design a basic pipeline.
+In the next video, I'll go over more advanced techniques for improving the pipeline to ensure that you're getting the correct answer and that you're always retrieving the right documents and not providing the LLM with irrelevant context or you're properly indexing your documents so that they can be retrieved.
+If you found this video helpful, please give it a like and subscribe for more educational content to help you build out your AI projects.
