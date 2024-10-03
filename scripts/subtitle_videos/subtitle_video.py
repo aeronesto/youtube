@@ -1,13 +1,9 @@
 ## Imports
-from __future__ import unicode_literals
-from IPython.display import Video
 import whisper
-import cv2
 from functools import partial
 import pandas as pd
 from moviepy.editor import VideoFileClip
 import moviepy.editor as mp
-from IPython.display import display, Markdown
 from moviepy.editor import *
 from moviepy.video.tools.subtitles import SubtitlesClip
 import os
