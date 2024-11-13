@@ -9,6 +9,8 @@ notes/
 sample_data/
 .vscode
 tmp/
+scripts/descript_level_subtitles/inputs
+scripts/descript_level_subtitles/outputs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
