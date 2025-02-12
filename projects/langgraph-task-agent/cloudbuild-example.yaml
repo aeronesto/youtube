@@ -1,0 +1,42 @@
+steps:
+  # Install LangGraph CLI and generate Dockerfile in the same step
+  - name: 'python:3.12'
+    entrypoint: 'sh'
+    args: ['-c', 'pip install langgraph-cli && langgraph dockerfile -c langgraph.json Dockerfile']
+
+  # Build Docker image with tag (-t) and specified platform
+  # Created with documentation: https://cloud.google.com/build/docs/building/build-containers
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/langgraph-task-agent/task-maistro-demo-app:latest', '.' ]
+
+  # Push Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/langgraph-task-agent/task-maistro-demo-app:latest']
+
+  # Deploy Docker image to Cloud Run with VPC Connector, using the image from Artifact Registry. 
+  # Created with documentation: https://cloud.google.com/run/docs/deploying
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: ['run', 'deploy', 'task-maistro-demo-app',
+            '--image', 'us-central1-docker.pkg.dev/$PROJECT_ID/langgraph-task-agent/task-maistro-demo-app:latest',
+            '--region', 'us-central1',
+            '--platform', 'managed',
+            '--set-env-vars', 'LANGCHAIN_API_KEY=$LANGCHAIN_API_KEY,LANGCHAIN_PROJECT=$LANGCHAIN_PROJECT,LANGSMITH_API_KEY=$LANGSMITH_API_KEY,OPENAI_API_KEY=$OPENAI_API_KEY,REDIS_URI=$REDIS_URI,DATABASE_URI=$DATABASE_URI',
+            '--port', '8000',
+            '--allow-unauthenticated',
+            '--timeout', '1800s',
+            '--memory', '2Gi',
+            '--cpu', '2',
+            '--vpc-connector', 'task-maistro-vpc-con'
+           ]
+substitutions:
+  _PROJECT_ID: $PROJECT_ID
+  _LANGCHAIN_API_KEY: $LANGCHAIN_API_KEY
+  _LANGCHAIN_PROJECT: $LANGCHAIN_PROJECT
+  _LANGSMITH_API_KEY: $LANGSMITH_API_KEY
+  _OPENAI_API_KEY: $OPENAI_API_KEY
+  _REDIS_URI: $REDIS_URI
+  _DATABASE_URI: $DATABASE_URI
+options:
+  substitution_option: 'ALLOW_LOOSE'
+  logging: CLOUD_LOGGING_ONLY

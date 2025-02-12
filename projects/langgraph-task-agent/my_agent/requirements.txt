@@ -1,0 +1,6 @@
+langgraph
+langchain-core
+langchain-community
+langchain-openai
+langgraph-checkpoint-postgres
+trustcall

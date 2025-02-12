@@ -1,0 +1,38 @@
+volumes:
+    langgraph-data:
+        driver: local
+services:
+  redis:
+    image: redis:6
+    container_name: my_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+        test: ["CMD", "redis-cli", "ping"]
+        interval: 5s
+        timeout: 1s
+        retries: 5
+    networks:
+      - my_network
+  postgres:
+    image: postgres:16
+    ports:
+        - "5432:5432"
+    container_name: my_postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: mydb
+    volumes:
+        - langgraph-data:/var/lib/postgresql/data
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U user"]
+        start_period: 10s
+        timeout: 1s
+        retries: 5
+        interval: 5s
+    networks:
+      - my_network
+
+networks:
+  my_network:

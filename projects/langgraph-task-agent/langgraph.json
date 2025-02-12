@@ -1,0 +1,11 @@
+{
+    "dockerfile_lines": [],
+    "graphs": {
+      "task_maistro": "./my_agent/task_maistro.py:graph"
+    },
+    "python_version": "3.12",
+    "dependencies": [
+      "./my_agent"
+    ],
+    "env": "/.env"
+  }
