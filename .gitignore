@@ -11,6 +11,7 @@ sample_data/
 tmp/
 scripts/descript_level_subtitles/inputs
 scripts/descript_level_subtitles/outputs
+lyrics/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
