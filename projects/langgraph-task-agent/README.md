@@ -74,31 +74,11 @@ A VPC is required by Redis & Postgres to communicate within GCP.
 
 #### Create Postgres Instance
 
-**Create a private Postgres instance to be used for persistence in your application (short & long-term memory) and run IDs**
-
-Cloud Run is serverless, so we cannot connect it to the VPC directly. We will use a VPC connector to allow Cloud Run to access the private network where the Postgres instance resides.  This avoids exposing the database directly to the public internet.
-
-#### Create VPC Connector
-
-**A VPC Connector allows us to connect our serverless Cloud Run instance to the VPC.**
-
-**[Create a VPC Connector Documentation](https://cloud.google.com/sdk/gcloud/reference/compute/networks/vpc-access/connectors/create)**
-
-CLI command to create a VPC connector:
-
-`gcloud compute networks vpc-access connectors create my-vpc-connector --region=us-central1 --network=default --subnet=vpc-connector-subnet --range=10.132.0.0/28`
-
-**[Create a subnet Documentation](https://cloud.google.com/sdk/gcloud/reference/compute/networks/subnets/create)**
-
-CLI command to create a subnet:
-
-`gcloud compute networks subnets create vpc-connector-subnet --network=default --range=10.10.0.0/24 --region=us-central1`
+Create a private Postgres instance to be used for persistence in your application (short & long-term memory) and run IDs
 
 #### Create Redis Instance
 
-**Create Redis instance to be used to communicate between the HTTP worker and Queue worker in the LangGraph server**
-
-* set the service connection policy to allow the VPC
+Create Redis instance to be used to communicate between the HTTP worker and Queue worker in the LangGraph server
 
 #### Create Cloud Build Config File
 
@@ -108,6 +88,30 @@ The `cloudbuild.yaml` file is where you:
 * Save Docker image to Google Artifact Registry
 * Provide environment variables to application
 * Run the application on Cloud Run instance
+
+Cloud Run is serverless, so we cannot connect it to the VPC directly. We will use a VPC connector to allow Cloud Run to access the private network where the Postgres instance resides.  This avoids exposing the database directly to the public internet.
+
+#### Create VPC Connector
+
+**A VPC Connector allows us to connect our serverless Cloud Run instance to the VPC.**
+
+First we must create a subnet.
+
+**[Create a subnet Documentation](https://cloud.google.com/sdk/gcloud/reference/compute/networks/subnets/create)**
+
+CLI command to create a subnet:
+
+`gcloud compute networks subnets create vpc-connector-subnet --network=default --range=10.10.0.0/28 --region=us-central1`
+
+**[Create a VPC Connector Documentation](https://cloud.google.com/sdk/gcloud/reference/compute/networks/vpc-access/connectors/create)**
+
+CLI command to create a VPC connector with a subnet:
+
+`gcloud compute networks vpc-access connectors create task-maistro-vpc-con --region=us-central1 --subnet=vpc-connector-subnet`
+
+Confirm the VPC connector was created:
+
+`gcloud compute networks vpc-access connectors describe task-maistro-vpc-con --region=us-central1`
 
 #### Create Cloud Build Trigger
 
